@@ -1,30 +1,32 @@
-# from django.db import models
-# from conf.settings import AUTH_USER_MODEL
-# User = AUTH_USER_MODEL
-# from home.models import Gullar
-# # Create your models here.
+from django.db import models
+from conf.settings import AUTH_USER_MODEL
+User = AUTH_USER_MODEL
+from home.models import Gullar
+# Create your models here.
 
-# class Card(models.Model):
-#     user = models.OneToOneField(on_delete=models.CASCADE, blank=True, null=True)
-#     create_at = models.DateField(auto_now_add=True)
+class Card(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
+    created_at = models.DateField(auto_now_add=True)
 
-#     def __str__(self):
-#         return self.user.first_name
+    def __str__(self):
+        return self.user.first_name
     
-#     @property
-#     def total_price(self):
-#         return sum(item.total_price for item in self.items)
+    @property
+    def total_price(self):
+        return sum(item.total_price for item in self.items.all())
  
 
-# class CaradItem(models.Model):
-#     card = models.ForeignKey(on_delete=models.CASCADE)
-#     gullar = models.ForeignKey(Gullar, on_delete=models.CASCADE, blank=True, null=True)
-#     amount = models.PositiveIntegerField(default=1)
+class CardItem(models.Model):
+    card = models.ForeignKey(Card, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey(Gullar, on_delete=models.CASCADE, blank=True, null=True)
+    amount = models.PositiveIntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
-#     def __str__(self): 
-#         return self.gullar.name
+    def __str__(self): 
+        return self.product.name
 
-#     @property
-#     def total_price(self):
-#         return self.gullar.price * self.amount
+    @property
+    def total_price(self):
+        return self.product.price * self.amount

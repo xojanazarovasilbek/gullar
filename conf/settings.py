@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'auth_user_',
     'rest_framework.authtoken',
+    'card',
+    'order',
 ]
 SITE_ID = 1
 
